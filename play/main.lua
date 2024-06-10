@@ -25,12 +25,16 @@ local URL = window.link
 
 -- Libs
 local Vec3 = require(`{URL}/libs/vec3.lua`)
+local SDFs = require(`{URL}/libs/sdfs.lua`)
 
--- Rendering Constatns
+-- Setup types
+type Vec3 = Vec3.Vec3
+
+-- Rendering Constants
 local RENDER_WINDOW = get("render_view")
 local LIGHT_DIRECTION = Vec3.new(1, 1, 0):normalize()
 local FPS = 20
-local CHARACTERS_PER_UNIT = .5
+local CHARACTERS_PER_UNIT = 0.5
 local MAX_STEPS = 100
 local MAX_DIST = 100
 local SURFACE_DIST = 0.01
@@ -47,15 +51,12 @@ log("Loaded")
 log(Vec3.new(1, 2, 3).x)
 log("a")
 
--- Shapes
-local function SphereSDF(viewer: Vec3, radius: number)
-    return viewer:length() - radius
-end
 
 -- World
 local function WorldSDF(v: Vec3)
    return math.min(
-        SphereSDF(v - Vec3.new(0,0,0), math.sin(elapsed_time()*5) * 5 + 50)
+        SDFs.SphereSDF(v - Vec3.new(30,0,0), math.sin(elapsed_time()*5) * 5 + 50),
+        SDFs.SphereSDF(v - Vec3.new(-30,math.sin(elapsed_time()*5)*50,0), math.sin(elapsed_time()*10) * -5 + 50)
         -- SphereSDF(v - Vec3.new(0,0,0), 5)
     )
 end
@@ -106,6 +107,43 @@ local function Raymarch(ro: Vec3, rd: Vec3)
     end
 
     return false
+end
+
+function calculateRayDirections(cameraPosition, lookVector, fieldOfView, imageWidth, imageHeight)
+    local rayDirections = {}
+    
+    -- Convert field of view to radians
+    local thetaFOV = math.rad(fieldOfView)
+    
+    -- Calculate d
+    local d = 1 / math.tan(thetaFOV / 2)
+    
+    -- Iterate over each pixel
+    for y = 0, imageHeight - 1 do
+        for x = 0, imageWidth - 1 do
+            -- Calculate normalized device coordinates
+            local Px = x + 0.5
+            local Py = y + 0.5
+            local aspectRatio = imageWidth / imageHeight
+            
+            -- Calculate ray direction
+            local rayDirX = aspectRatio * (2 * Px / imageWidth) - 1
+            local rayDirY = (2 * Py / imageHeight) - 1
+            local rayDirZ = d
+            
+            -- Adjust ray direction based on handedness of coordinate system
+            -- For right-handed systems, rayDirZ should be negative
+            -- For left-handed systems, rayDirZ should be positive
+            -- Note: This can be adjusted based on the specific system used
+            -- In this implementation, let's assume right-handed system
+            rayDirZ = -rayDirZ
+            
+            -- Store the ray direction
+            table.insert(rayDirections, {x = rayDirX, y = rayDirY, z = rayDirZ})
+        end
+    end
+    
+    return rayDirections
 end
 
 local function RaymarchCamera()
