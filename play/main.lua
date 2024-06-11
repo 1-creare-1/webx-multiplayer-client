@@ -15,7 +15,7 @@ local INIT = os.clock()
 function elapsed_time()
     return os.clock() - INIT
 end
-xpcall(function()
+-- xpcall(function()
     
 
 
@@ -201,7 +201,7 @@ end
 Update()
 
 
-end, warn)
+-- end, warn)
 
 --[[
 
