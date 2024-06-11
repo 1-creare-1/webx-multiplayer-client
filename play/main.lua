@@ -27,8 +27,8 @@ local DOMAIN = "buss://raymarch.dev/play"
 log(URL)
 -- libs/vec3.lua
 -- Libs
-local Vec3 = require(`{DOMAIN}/libs/vec3.lua`)
-local SDFs = require(`{DOMAIN}/libs/sdfs.lua`)
+local Vec3 = require(`{URL}/libs/vec3.lua`)
+local SDFs = require(`{URL}/libs/sdfs.lua`)
 
 -- Setup types
 type Vec3 = Vec3.Vec3
