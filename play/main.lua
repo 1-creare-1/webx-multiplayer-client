@@ -33,30 +33,27 @@ type Vec3 = Vec3.Vec3
 -- Rendering Constants
 local RENDER_WINDOW = get("render_view")
 local LIGHT_DIRECTION = Vec3.new(1, 1, 0):normalize()
-local FPS = 20
+local FPS = 60
 local CHARACTERS_PER_UNIT = 0.5
 local MAX_STEPS = 100
-local MAX_DIST = 100
+local MAX_DIST = 500
 local SURFACE_DIST = 0.01
-local CHARSET = {' ','.',',','-','~',':',';','=','!','*','#','$','@'}
+local CHARSET = {'.',',','-','~',':',';','=','!','*','#','$','@'}
 -- local CHARSET = {'.','#'}
 
-
+local TITLE_LABEL = get("title")
 
 log(Vec3)
 -- Init
 get("version").set_content(VERSION)
 log(URL)
 log("Loaded")
-log(Vec3.new(1, 2, 3).x)
-log("a")
-
 
 -- World
 local function WorldSDF(v: Vec3)
    return math.min(
-        SDFs.SphereSDF(v - Vec3.new(30,0,0), math.sin(elapsed_time()*5) * 5 + 50),
-        SDFs.SphereSDF(v - Vec3.new(-30,math.sin(elapsed_time()*5)*50,0), math.sin(elapsed_time()*10) * -5 + 50)
+        SDFs.SphereSDF(v - Vec3.new(30,0,0), 50),--math.sin(elapsed_time()*5) * 5 + 50),
+        SDFs.SphereSDF(v - Vec3.new(-30,math.sin(elapsed_time()*5)*50,0), 50)--math.sin(elapsed_time()*10) * -5 + 50)
         -- SphereSDF(v - Vec3.new(0,0,0), 5)
     )
 end
@@ -147,11 +144,16 @@ function calculateRayDirections(cameraPosition, lookVector, fieldOfView, imageWi
 end
 
 local function RaymarchCamera()
-    local WIDTH = 100*CHARACTERS_PER_UNIT
+    local WIDTH = 200*CHARACTERS_PER_UNIT
     local HEIGHT = 100*CHARACTERS_PER_UNIT
 
-    local CAM_DIR = Vec3.new(0, 0, 1)
-    local CAM_POS = Vec3.new(0, 0, -20)
+    local r = os.clock()
+    local CAM_POS = Vec3.new(math.cos(r) * 500, 5, math.sin(r) * 500)
+    -- local CAM_DIR = Vec3.new(0, 0, 1)
+    local CAM_DIR = CAM_POS:normalize() * -1
+    local WORLD_UP = Vec3.new(0, 1, 0)
+    local CAM_RIGHT = CAM_DIR:cross(WORLD_UP):normalize()
+    local CAM_UP = CAM_DIR:cross(CAM_RIGHT):normalize()
 
     local rows = table.create(WIDTH)
     for y = HEIGHT, 0, -1 do
@@ -160,7 +162,9 @@ local function RaymarchCamera()
             local wx = (x - (WIDTH / 2)) * 1/CHARACTERS_PER_UNIT
             local wy = (y - (HEIGHT / 2)) * 1/CHARACTERS_PER_UNIT
             wy *= 2 -- Account for vertical/horizontal gap between characters
-            local hit, pos = Raymarch(Vec3.new(wx, wy, 0)+CAM_POS, CAM_DIR)
+            
+            local cast_offset = CAM_UP * -wy + CAM_RIGHT * -wx
+            local hit, pos = Raymarch(cast_offset+CAM_POS, CAM_DIR)
 
             if hit then
                 local normal = GetNormal(pos)
@@ -184,8 +188,13 @@ local function DrawWorld()
     RENDER_WINDOW.set_content(out)
 end
 
-local function Update()
+local last_frame_time = os.clock()
+local function Update(dt)
     DrawWorld()
+    local spf = os.clock() - last_frame_time
+    local fps = 1 / spf
+    TITLE_LABEL.set_content(`Raymarching Test  {math.round(fps)} FPS`)
+    last_frame_time = os.clock()
     set_timeout(Update, 1/FPS*1000)
 end
 Update()

@@ -20,8 +20,8 @@ render_container {
 render_view {
     color: white;
     font-size: 8px;
-    width: 600px;
-    height: 400px;
+    width: 6000px;
+    height: 6000px;
     border-width: 4px;
     border-radius: 0px;
     border-style: inset;
