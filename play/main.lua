@@ -22,6 +22,7 @@ xpcall(function()
 -- Constants
 local VERSION = "v0.0.1"
 local URL = window.link
+log(URL)
 
 -- Libs
 local Vec3 = require(`{URL}/libs/vec3.lua`)
@@ -46,7 +47,6 @@ local TITLE_LABEL = get("title")
 log(Vec3)
 -- Init
 get("version").set_content(VERSION)
-log(URL)
 log("Loaded")
 
 -- World
