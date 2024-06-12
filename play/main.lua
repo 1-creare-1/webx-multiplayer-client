@@ -20,17 +20,18 @@ xpcall(function()
 
 
 -- Constants
-local VERSION = "v0.0.1"
+local VERSION = "v0.0.2"
 local URL = window.link
 local RAW_URL = "https://raw.githubusercontent.com/1-creare-1/webx-multiplayer-client/main/play"
 local DOMAIN = "buss://raymarch.dev/play"
 log(URL)
 -- libs/vec3.lua
 -- Libs
+log(VERSION)
 log("About to get Vec3 Lib")
-local Vec3 = require(`{URL}/libs/vec3.lua`)
+local Vec3 = require(`{RAW_URL}/libs/vec3.lua`)
 log("Got Vec3 Lib")
-local SDFs = require(`{URL}/libs/sdfs.lua`)
+local SDFs = require(`{RAW_URL}/libs/sdfs.lua`)
 log("GOt sdf lib")
 log(Vec3.new(1, 2, 3).z)
 
