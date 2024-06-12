@@ -4,11 +4,16 @@ local Vec3 = require(`{RAW_URL}/libs/vec3.lua`)
 -- Setup types
 type Vec3 = Vec3.Vec3
 
-local module = {}
+local sd = {}
 
 -- Shapes
-function module.SphereSDF(viewer: Vec3, radius: number)
+function sd.Sphere(viewer: Vec3, radius: number)
     return viewer:length() - radius
 end
 
-return module
+function sd.Plane(p: Vec3, n: Vec3, h: Vec3)
+  -- n must be normalized
+  return Vec3.splat(p:dot(n)) + h
+end
+
+return sd
