@@ -29,9 +29,11 @@ log(URL)
 -- Libs
 local Vec3 = require(`{URL}/libs/vec3.lua`)
 local SDFs = require(`{URL}/libs/sdfs.lua`)
+log(Vec3.new(1, 2, 3).z)
 
 -- Setup types
 type Vec3 = Vec3.Vec3
+log("Defined Types")
 
 -- Rendering Constants
 local RENDER_WINDOW = get("render_view")
@@ -45,6 +47,8 @@ local CHARSET = {'.',',','-','~',':',';','=','!','*','#','$','@'}
 -- local CHARSET = {'.','#'}
 
 local TITLE_LABEL = get("title")
+log("Defined Constants")
+
 
 log(Vec3)
 -- Init
