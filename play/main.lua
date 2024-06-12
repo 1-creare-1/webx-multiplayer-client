@@ -28,7 +28,9 @@ log(URL)
 -- libs/vec3.lua
 -- Libs
 local Vec3 = require(`{URL}/libs/vec3.lua`)
+log("Got Vec3 Lib")
 local SDFs = require(`{URL}/libs/sdfs.lua`)
+log("GOt sdf lib")
 log(Vec3.new(1, 2, 3).z)
 
 -- Setup types
@@ -49,8 +51,6 @@ local CHARSET = {'.',',','-','~',':',';','=','!','*','#','$','@'}
 local TITLE_LABEL = get("title")
 log("Defined Constants")
 
-
-log(Vec3)
 -- Init
 get("version").set_content(VERSION)
 log("Loaded")
