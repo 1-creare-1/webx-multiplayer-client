@@ -27,6 +27,7 @@ local DOMAIN = "buss://raymarch.dev/play"
 log(URL)
 -- libs/vec3.lua
 -- Libs
+log("About to get Vec3 Lib")
 local Vec3 = require(`{URL}/libs/vec3.lua`)
 log("Got Vec3 Lib")
 local SDFs = require(`{URL}/libs/sdfs.lua`)
