@@ -11,9 +11,9 @@ function sd.Sphere(viewer: Vec3, radius: number)
     return viewer:length() - radius
 end
 
-function sd.Plane(p: Vec3, n: Vec3, h: Vec3)
+function sd.Plane(p: Vec3, n: Vec3, h: number)
   -- n must be normalized
-  return Vec3.splat(p:dot(n)) + h
+  return p:dot(n) + h
 end
 
 return sd
