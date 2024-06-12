@@ -1,4 +1,6 @@
-local Vec3 = require(`{window.link}/libs/vec3.lua`)
+local RAW_URL = "https://raw.githubusercontent.com/1-creare-1/webx-multiplayer-client/main/play"
+
+local Vec3 = require(`{RAW_URL}/libs/vec3.lua`)
 -- Setup types
 type Vec3 = Vec3.Vec3
 
