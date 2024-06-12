@@ -53,8 +53,8 @@ log("Loaded")
 local function WorldSDF(v: Vec3)
    return math.min(
         SDFs.Sphere(v - Vec3.new(30,0,0), 50),--math.sin(elapsed_time()*5) * 5 + 50),
-        SDFs.Sphere(v - Vec3.new(-30,math.sin(elapsed_time()*5)*50,0), 50),--math.sin(elapsed_time()*10) * -5 + 50)
-        SDFs.Plane(v, Vec3.new(0, 1, 0), 0)
+        SDFs.Sphere(v - Vec3.new(-30,math.sin(elapsed_time()*5)*50,0), 50)--math.sin(elapsed_time()*10) * -5 + 50)
+        -- SDFs.Plane(v, Vec3.new(0, -1, 0), 50)
         -- SphereSDF(v - Vec3.new(0,0,0), 5)
     )
 end
