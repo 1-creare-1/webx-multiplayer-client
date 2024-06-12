@@ -11,11 +11,15 @@ end
 -- Hide silly seo optimization
 get("seo").set_visible(false)
 
-local u = window.link
-log(u)
+local HOST = window.link
+local URL
+if HOST:find("localhost") then
+    URL = "localhost.dev/"
+else
+    URL = "raymarch.dev/"
+end
+
 -- buss://raymarch.dev/play
 for _, url in get("link", true) do
-    log(url.get_href())
-    url.set_href("buss://" .. url.get_href():gsub("#", "localhost.dev/"))
-    log(url.get_href())
+    url.set_href("buss://" .. url.get_href():gsub("#", URL))
 end
